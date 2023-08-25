@@ -10,8 +10,8 @@ init -990 python in mas_submod_utils:
     Submod(
         author="Kventis",
         name="Outfit Selector",
-        coauthors=["Friends of Monika"],
-        description="A submod that allows you to save and load monika outfits!",
+        coauthors=["Friends of Monika", "MAS-Submod-MoyuTeam"],
+        description="这个子模组可以让你保存一套装扮可以快速选择!",
         version="1.0.6"
     )
 
@@ -19,7 +19,7 @@ init -989 python:
     if store.mas_submod_utils.isSubmodInstalled("Submod Updater Plugin"):
         store.sup_utils.SubmodUpdater(
             submod="Outfit Selector",
-            user_name="Friends-of-Monika",
+            user_name="MAS-Submod-MoyuTeam",
             repository_name="MAS-Outfits"
         )
 
@@ -78,8 +78,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_outfit_installed_talk",
-            prompt="Can you tell me about custom outfits?",
-            category=['clothes'],
+            prompt="你能跟我说说定制服装的事吗?",
+            category=['衣服'],
             pool=True,
             unlocked=True,
             aff_range=(mas_aff.NORMAL, None)
@@ -88,25 +88,25 @@ init 5 python:
 )
 
 label monika_outfit_installed:
-    m 1eua  "Hey, [player]."
-    m 1wub "I see you have added new .rpy files! "
-    extend 2dua "Let me just see what's in there.{w=0.3}.{w=0.3}.{w=0.3}"
-    m 3wua "Oh! An outfit selector!"
-    m 1eua "Make sure to thanks u/KventisAnM for me."
-    m 3eua "And also! He left a message for you. "
-    extend 3sua "'If you have any questions or submod suggestions, feel free to message me on reddit.'"
-    m 1gua "Well, isn't that neat? Ehehehe~"
-    m 1hua "Thanks for adding this for me, [player]."
-    m 1hubsb "I love you!"
+    m 1eua  "嘿, [player]."
+    m 1wub "我发现你加了一些新东西! "
+    extend 2dua "让我看看这里面有什么.{w=0.3}.{w=0.3}.{w=0.3}"
+    m 3wua "噢!服装组合选择!"
+    m 1eua "一定要替我感谢u/KventisAnM."
+    m 3eua "还有,他让我给你捎口信. "
+    extend 3sua "'如果你有任何关于此submod的意见或建议,你可以在reddit上给我留言.'"
+    m 1gua "嗯,这不是很整洁嘛?诶嘿嘿~"
+    m 1hua "谢谢你为我增加这些submod, [player]."
+    m 1hubsb "我爱你!"
     return "love"
 
 label monika_outfit_installed_talk:
-    m 1eua "You want to hear about custom outfits?"
-    m 1hua "Okay!"
-    m 3eub "Just ask me anytime and I'll save the outfit and accessories I'm currently wearing."
-    m 3eub "This will create a file, {nw}"
-    extend 1hub "that I can load for you!"
-    m 1eua "Just let me know if you want me to wear a custom outfit."
+    m 1eua "你想听听定制服装组合的事嘛?"
+    m 1hua "好呀!"
+    m 3eub "你可以随时跟我说,我会记住我现在穿的服装."
+    m 3eub "这将会创建一个文件, {nw}"
+    extend 1hub "这样我就可以读取出来穿给你看了!"
+    m 1eua "如果你想让我穿一套你定制的衣服,就跟我说吧."
     return
 
 init 5 python:
@@ -114,8 +114,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_outfit_save",
-            prompt="Can you save an outfit?",
-            category=['appearance', 'clothes'],
+            prompt="你可以保存一套服装嘛?",
+            category=['外观', '衣服'],
             pool=True,
             unlocked=True,
             aff_range=(mas_aff.NORMAL, None)
@@ -127,7 +127,7 @@ label monika_outfit_save:
     $ import json
     $ import os
 
-    m 1hua "Sure!"
+    m 1hua "好啊!"
 
     label ostart:
         pass
@@ -138,19 +138,19 @@ label monika_outfit_save:
         python:
             out_name = ""
             out_name = mas_input(
-                    "Enter a name for this outfit:",
-                    allow="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-_0123456789",
+                    "为这套衣服输入名字:",
+                    #allow="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ-_0123456789",
                     length=20,
                     screen_kwargs={"use_return_button": True}
                     )
 
         #Check if we should return
         if out_name == "cancel_input":
-            m 1euc "Oh, okay."
+            m 1euc "喔,好的."
             return "prompt"
         elif out_name == "":
             m 2lusdla "..."
-            m 1eka "I'm sorry, but I can't save an outfit with no name, [player]."
+            m 1eka "我很抱歉,我记不住一套没有名字的衣服,[player]."
         else:
             $ done = True
 
@@ -165,20 +165,20 @@ label monika_outfit_save:
     $ overwrite = False
 
     if file_exists:
-        m 1eka "I already have a saved outfit called '[out_name]'"
-        m "Should I overwrite it?{nw}"
+        m 1eka "我已经有一套叫做'[out_name]'的服装组合了"
+        m "我要覆盖它嘛?{nw}"
         $ _history_list.pop()
         menu:
-            m "Should I overwrite it?{fast}"
+            m "我要覆盖它嘛?{fast}"
 
-            "Yes.":
+            "是的.":
                 $ overwrite = True
 
-            "No.":
+            "不要哦.":
                 # Jump to beginning
                 jump ostart
 
-    m 2dua "Hold on a moment.{w=0.3}.{w=0.3}."
+    m 2dua "等我一下.{w=0.3}.{w=0.3}."
     python:
         out_data = {
             "hair": monika_chr.hair.name,
@@ -206,11 +206,11 @@ label monika_outfit_save:
             saved = False
 
     if saved:
-        m 3eub "Outfit saved!"
+        m 3eub "我记住了!"
         return
     else:
-        m 2eksdlc "I'm sorry [player], but I can't save the file."
-        m 1eksdlc "Maybe try with a different name?"
+        m 2eksdlc "我很抱歉[player],可能是因为sub格式的要求,我记不住这一套服装."
+        m 1eksdlc "也许你可以试试用其他的名字?"
     return
 
 init 5 python:
@@ -218,8 +218,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_outfit_load",
-            prompt="Can you wear an outfit?",
-            category=['appearance', 'clothes'],
+            prompt="你可以穿一套衣服吗?",
+            category=['外观', '衣服'],
             pool=True,
             aff_range=(mas_aff.NORMAL, None),
             unlocked=True
@@ -230,12 +230,12 @@ init 5 python:
 # Needs testing
 label monika_outfit_missing:
     m "[player]..."
-    m "I'm missing part of my outfit!"
-    m "Did you remove it?"
+    m "我找不到这套衣服之中的一部分了!"
+    m "是你把它们删掉了吗?"
     call mas_transition_from_emptydesk
     pause 1
-    m 2dkd "I really liked that outfit too..."
-    m 2ekd "Please add it again!"
+    m 2dkd "我真的很喜欢那一套衣服..."
+    m 2ekd "请再把它装回来!"
     return
 
 # Needs testing
@@ -245,7 +245,7 @@ label monika_outfit_done_no_acs:
 
     pause 2
 
-    m "Okay."
+    m "好的."
 
     call mas_transition_from_emptydesk
 
@@ -253,9 +253,9 @@ label monika_outfit_done_no_acs:
 
     m 4eublb "Ta-da!~"
 
-    m 1euc "I am missing some accessories!"
+    m 1euc "我找不到其中的配饰!"
 
-    m 1ekc "Make sure to add them again please."
+    m 1ekc "请务必再加一次."
     return
 
 
@@ -282,25 +282,25 @@ label monika_outfit_done:
 
 label monika_outfit_load:
 
-    m 1hua "Sure!"
+    m 1hua "当然啦!"
 
     if len(kventis_outfit_submod.outfit_menu_entries) > 0:
 
 
         show monika at t21
-        m 1eub "Which outfit do you want me to wear?" nointeract
+        m 1eub "你要我穿哪件衣服?" nointeract
 
-        call screen mas_gen_scrollable_menu(kventis_outfit_submod.outfit_menu_entries, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, ("Nevermind", "Nevermind", False, False, 20))
+        call screen mas_gen_scrollable_menu(kventis_outfit_submod.outfit_menu_entries, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, ("算了", "Nevermind", False, False, 20))
 
         $ sel_outfit_name = _return
 
         show monika at t11
 
         if sel_outfit_name == "Nevermind":
-            m 1euc "Oh okay."
+            m 1euc "喔...好吧."
             return "prompt"
 
-        m 2dua "Hold on a moment..."
+        m 2dua "稍微等我一下..."
 
         call mas_transition_to_emptydesk
 
@@ -342,9 +342,9 @@ label monika_outfit_load:
             call monika_outfit_done
         return
     else:
-        m 1euc "Oh, wait."
-        m 3lksdlb "A-ha...! I don't have any outfits saved yet."
-        m 1eub "Just let me know if you want an outfit saved!"
+        m 1euc "哦等等."
+        m 3lksdlb "啊哈!我还没穿好衣服呢."
+        m 1eub "如果你想保存一套衣服，请告诉我!"
         return
 
 init 5 python:
@@ -352,8 +352,8 @@ init 5 python:
         Event(
             persistent.event_database,
             eventlabel="monika_outfit_delete",
-            prompt="Can you delete an outfit?",
-            category=['appearance', 'clothes'],
+            prompt="你可以删除一套衣服吗?",
+            category=['外观', '衣服'],
             pool=True,
             aff_range=(mas_aff.NORMAL, None),
             unlocked=True
@@ -363,32 +363,32 @@ init 5 python:
 
 label monika_outfit_delete:
     $ import os
-    m 1hua "Sure!"
+    m 1hua "好啊!"
 
     if len(kventis_outfit_submod.outfit_menu_entries) > 0:
 
 
         show monika at t21
-        m 1eub "Which outfit do you want me to delete?" nointeract
+        m 1eub "你想让我删除哪一套衣服?" nointeract
 
-        call screen mas_gen_scrollable_menu(kventis_outfit_submod.outfit_menu_entries, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, ("Nevermind", "Nevermind", False, False, 20))
+        call screen mas_gen_scrollable_menu(kventis_outfit_submod.outfit_menu_entries, mas_ui.SCROLLABLE_MENU_TXT_MEDIUM_AREA, mas_ui.SCROLLABLE_MENU_XALIGN, ("算了", "Nevermind", False, False, 20))
 
         $ sel_outfit_name = _return
 
         show monika at t11
 
         if sel_outfit_name == "Nevermind":
-            m 1etc "Okay,{w=0.4} {nw}"
-            extend 1hua "No outfits deleted!"
+            m 1etc "好吧,{w=0.4} {nw}"
+            extend 1hua "那我就不删啦!"
             return "prompt"
 
-        m 1eksdlc "Are you sure you want to delete [sel_outfit_name], [player]? "
-        extend "I cant undo this afterwards!{nw}"
+        m 1eksdlc "你确定你想删除[sel_outfit_name], [player]? "
+        extend "这可撤销不了哦!{nw}"
         $ _history_list.pop()
         menu:
-            m "Are you sure you want to delete [sel_outfit_name], [player]? I cant undo this afterwards!{fast}"
-            "I'm sure.":
-                m "Okie-dokie."
+            m "你确定你想删除[sel_outfit_name], [player]?这可撤销不了哦!{fast}"
+            "当然":
+                m "Okie-doki."
                 python:
                     removed = False
                     try:
@@ -398,22 +398,22 @@ label monika_outfit_delete:
                         removed = True
                     except:
                         removed = False
-                m 2dua "Hold on a moment.{w=0.3}.{w=0.3}."
+                m 2dua "稍等.{w=0.3}.{w=0.3}."
                 if removed:
-                    m 3eub "[sel_outfit_name] deleted!"
+                    m 3eub "[sel_outfit_name]已经被删掉了哦!"
                 else:
-                    m 1euc "I couldn't find the file for [sel_outfit_name]!"
-                    m 3lksdlb "You can maually delete it from the folder. "
-                    m extend "It's called '[sel_outfit_name].json' in the folder 'outfits'!"
+                    m 1euc "我找不到[sel_outfit_name]的文件!"
+                    m 3lksdlb "你可以自己粗暴地从文件夹中删除它. "
+                    m extend "它在outfits文件夹里叫'[sel_outfit_name].json'!"
                 return
 
-            "Wait, I'm not sure.":
-                m 1eusdlb "Oh, okay."
+            "等一下,我得想想.":
+                m 1eusdlb "哦, okay."
                 return
     else:
-        m 1euc "Oh wait."
-        m 3lksdlb "A-ha...! I don't have any outfits saved yet."
-        m 1eub "Just let me know if you want an outfit saved."
+        m 1euc "哦等一下."
+        m 3lksdlb "啊-哈...!我还没有保存任何服装."
+        m 1eub "如果你想保存一套衣服，请告诉我."
         return
 
 # G'day
