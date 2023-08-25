@@ -10,9 +10,7 @@
 </p>
 
 ## 💚 Details
-You can share outfits with other users by sending the .json files inside the
-outfits folder; **both users** must have the same spritepacks installed for it
-to work.
+您可以通过发送 .json 文件来与其他用户共享一套服装预设服装； **两个用户**必须安装相同的精灵包
 
 ## 🌟 Screenshots
 
