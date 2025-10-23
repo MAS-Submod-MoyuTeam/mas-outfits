@@ -12,7 +12,7 @@ init -990 python in mas_submod_utils:
         name="Outfit Selector",
         coauthors=["Friends of Monika", "MAS-Submod-MoyuTeam"],
         description="这个子模组可以让你保存一套装扮可以快速选择!",
-        version="1.0.6"
+        version="1.0.6.1"
     )
 
 init -989 python:
@@ -188,7 +188,7 @@ label monika_outfit_save:
         # Much cleaner
         acs = monika_chr.acs[0] + monika_chr.acs[1] + monika_chr.acs[3] + monika_chr.acs[4] + monika_chr.acs[5] + monika_chr.acs[6] + monika_chr.acs[7] + monika_chr.acs[8] + monika_chr.acs[9] + monika_chr.acs[10] + monika_chr.acs[11] + monika_chr.acs[12] + monika_chr.acs[13]
         # Needs names not classes
-        acs = map(lambda arg: arg.name, acs)
+        acs = list(map(lambda arg: arg.name, acs))
         out_data["acs"] = acs
 
         saved = False
@@ -203,6 +203,7 @@ label monika_outfit_save:
                 saved = True
             saved = True
         except Exception as e:
+            renpy.notify("保存失败: " + str(e))
             saved = False
 
     if saved:
